@@ -1,12 +1,16 @@
+$ cat .gitignore
+**/node_modules
+**/dist
+**/documentation
+
+*.log
+*.tgz
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
 /tmp
 /out-tsc
-
-# dependencies
-/node_modules
 
 # IDEs and editors
 /.idea
@@ -27,11 +31,11 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+**/coverage
 /libpeerconnection.log
-npm-debug.log
+**/npm-debug.log
 testem.log
-/typings
+**/typings
 
 # e2e
 /e2e/*.js

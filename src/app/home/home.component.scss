@@ -1,0 +1,94 @@
+.row {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 30px 0;
+  text-align: center;
+
+  span {
+    position: relative;
+    display: inline-block;
+    margin: 30px 10px;
+  }
+}
+
+.balloon {
+  // As suggested by https://twitter.com/dbox/status/365888496486985728
+  display: inline-block;
+  width: 215px;
+  padding: 10px 0;
+  text-align: right;
+  font-weight: 400;
+  font-size: .8rem;
+  color: #536dfe;
+  background: #fff;
+  border: 0;
+  border-radius: 3px;
+  outline: 0;
+  text-indent: 60px; // Arbitrary.
+  transition: all .3s ease-in-out;
+
+  &::-webkit-input-placeholder {
+    color: #efefef;
+    text-indent: 0;
+    font-weight: 300;
+  }
+
+  & + label {
+    display: inline-block;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    bottom: 8px;
+    padding: 3px 15px;
+    color: #536dfe;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(19, 74, 70, 0);
+    transition: all .3s ease-in-out;
+    border-radius: 3px;
+    background: #fff;
+
+    &:after {
+      position: absolute;
+      content: "";
+      width: 0;
+      height: 0;
+      top: 100%;
+      left: 50%;
+      margin-left: -3px;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 3px solid rgba(122, 184, 147, 0);
+      transition: all .3s ease-in-out;
+    }
+  }
+
+  &.disabled {
+    opacity: .4;
+
+    & + label {
+      background-color: transparent;
+    }
+  }
+}
+
+.balloon:focus {
+  color: #536dfe;
+  text-indent: 0;
+  background: #fff;
+
+  &::-webkit-input-placeholder {
+    color: #aaa;
+  }
+  & + label {
+    color: #536dfe;
+    // text-shadow: 0 1px 0 rgba(19, 74, 70, .4);
+    background: #fff;
+    transform: translateY(-40px);
+
+    &:after {
+      border-top: 4px solid #fafafa;
+    }
+  }
+}

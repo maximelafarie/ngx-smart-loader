@@ -1,0 +1,51 @@
+<div class="top">
+  <h3>Loading ? : <strong>{{ loader.isLoading(['myLoaderMulti']) ? 'Yes!' : 'Nope.' }}</strong></h3>
+</div>
+
+<div class="container">
+  <div class="item">
+    <h3>Loading ? : <strong>{{ loader.isLoading('myLoaderMulti') ? 'Yes!' : 'Nope.' }}</strong></h3>
+    <ngx-smart-loader identifier="myLoaderMulti" [delayIn]="2000" [delayOut]="200">
+      <div class="loader">
+        <div class="circle"></div>
+      </div>
+    </ngx-smart-loader>
+  </div>
+
+  <div class="item">
+    <h3>Loading ? : <strong>{{ loader.isLoading('myLoaderMulti') ? 'Yes!' : 'Nope.' }}</strong></h3>
+    <ngx-smart-loader identifier="myLoaderMulti" [delayOut]="200">
+      <div class="loader">
+        <div class="circle"></div>
+      </div>
+    </ngx-smart-loader>
+  </div>
+
+  <div class="item">
+    <h3>Loading ? : <strong>{{ loader.isLoading('myLoaderMulti') ? 'Yes!' : 'Nope.' }}</strong></h3>
+    <ngx-smart-loader identifier="myLoaderMulti" [delayOut]="200">
+      <div class="loader">
+        <div class="circle"></div>
+      </div>
+    </ngx-smart-loader>
+  </div>
+</div>
+
+<div class="container">
+  <div class="item item-blank">
+    <prism-block [code]="code.one" [language]="'html'"></prism-block>
+  </div>
+
+  <div class="item item-blank">
+    <prism-block [code]="code.two" [language]="'html'"></prism-block>
+  </div>
+
+  <div class="item item-blank">
+    <prism-block [code]="code.three" [language]="'html'"></prism-block>
+  </div>
+</div>
+
+<div class="btn-container">
+  <button (click)="loader.start(['myLoaderMulti'])">Loading start (actionDelay: 0ms)</button>
+  <button (click)="loader.stop(['myLoaderMulti'])">Loading stop (actionDelay: 0ms, hideDelay: 200ms)</button>
+</div>

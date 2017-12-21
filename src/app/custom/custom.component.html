@@ -1,0 +1,64 @@
+<div class="top">
+  <h3>Loading ? : <strong>{{ loader.isLoading(['myCustomLoader']) ? 'Yes!' : 'Nope.' }}</strong></h3>
+</div>
+
+<div class="container">
+  <div class="item item-white">
+    <ngx-smart-loader identifier="myCustomLoader" [delayIn]="2000" [delayOut]="2000">
+      <div class="rubik-loader"></div>
+    </ngx-smart-loader>
+  </div>
+
+  <div class="item item-white">
+    <ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+      <div id="jelly-loader">
+        <div id="shadow"></div>
+        <div id="box"></div>
+      </div>
+    </ngx-smart-loader>
+  </div>
+
+  <div class="item item-white">
+    <ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+      <div class="body">
+        <span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <div class="base">
+          <span></span>
+          <div class="face"></div>
+        </div>
+      </div>
+      <div class="longfazers">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h1>Redirecting</h1>
+    </ngx-smart-loader>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="item item-blank">
+    <prism-block [code]="code.one" [language]="'html'"></prism-block>
+  </div>
+
+  <div class="item item-blank">
+    <prism-block [code]="code.two" [language]="'html'"></prism-block>
+  </div>
+
+  <div class="item item-blank">
+    <prism-block [code]="code.three" [language]="'html'"></prism-block>
+  </div>
+</div>
+
+<div class="btn-container">
+  <button (click)="loader.start(['myCustomLoader'])">Loading start (actionDelay: 0ms)</button>
+  <button (click)="loader.stop(['myCustomLoader'])">Loading stop (actionDelay: 0ms, hideDelay: 200ms)</button>
+</div>

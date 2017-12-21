@@ -1,6 +1,7 @@
 {
-  "name": "ngx-smart-loader",
-  "version": "0.0.0",
+  "name": "ngx-smart-loader-demo",
+  "description": "Angular-CLI demo of ngx-smart-loader",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -8,7 +9,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ghpages": "yarn && ng build --prod --aot --no-progress --baseHref='/ngx-smart-loader/'"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +23,7 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "angular-prism": "^0.1.20",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

@@ -1,0 +1,4 @@
+/**
+ * @license ngx-smart-loader
+ * MIT license
+ */

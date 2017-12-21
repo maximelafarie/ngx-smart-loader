@@ -1,0 +1,33 @@
+<div class="top">
+  <h3>Loading ? : <strong>{{ loader.isLoading('myLoader') ? 'Yes!' : 'Nope.' }}</strong></h3>
+</div>
+
+<ngx-smart-loader identifier="myLoader" customClass="custom-class" [delayIn]="demoOptions.actionDelay" [delayOut]="demoOptions.hideDelay">
+  <div class="loader">
+    <div class="circle"></div>
+  </div>
+</ngx-smart-loader>
+
+<div class="btn-container">
+
+  <div class="row">
+    <span>
+      <input id="action" class="balloon" type="number" min="0" max="10000" step="100"
+             [(ngModel)]="demoOptions.actionDelay">
+      <label for="action">Action delay (ms)</label>
+    </span>
+    <span>
+      <input id="hide" class="balloon" [ngClass]="{'disabled': demoOptions.noHideDelay}" type="number" min="0"
+             max="10000" step="100" [(ngModel)]="demoOptions.hideDelay" [disabled]="demoOptions.noHideDelay">
+      <label for="hide">Hide delay (ms)</label>
+    </span>
+  </div>
+
+  <button (click)="loader.start('myLoader')">
+    Loading start (actionDelay: {{demoOptions.actionDelay}}ms)
+  </button>
+  <button
+    (click)="loader.stop('myLoader')">
+    Loading stop (actionDelay: {{demoOptions.actionDelay}}ms, hideDelay: {{demoOptions.hideDelay}}ms)
+  </button>
+</div>
