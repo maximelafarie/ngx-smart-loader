@@ -12,7 +12,7 @@ node_js:
 before_install:
   - npm i npm@^4 -g
   - npm install -g greenkeeper-lockfile@1
-  - cd src/ngx-smart-modal
+  - cd src/ngx-smart-loader
 install:
   - npm install
 script:
