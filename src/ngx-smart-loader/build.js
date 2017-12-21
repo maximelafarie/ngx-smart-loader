@@ -16,6 +16,9 @@ shell.rm(`-Rf`, `${NPM_DIR}/*`);
 shell.mkdir(`-p`, `./${ESM2015_DIR}`);
 shell.mkdir(`-p`, `./${ESM5_DIR}`);
 shell.mkdir(`-p`, `./${BUNDLES_DIR}`);
+shell.echo(shell.pwd());
+shell.cp('-R', 'src/ngx-smart-loader.scss', `${NPM_DIR}/`);
+shell.cp('-R', 'src/ngx-smart-loader.css', `${NPM_DIR}/`);
 
 /* TSLint with Codelyzer */
 // https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts

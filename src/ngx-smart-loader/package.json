@@ -1,6 +1,6 @@
 {
   "name": "ngx-smart-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Smart loader handler to manage loaders everywhere in Angular apps.",
   "main": "./bundles/ngx-smart-loader.umd.js",
   "module": "./esm5/ngx-smart-loader.js",
@@ -18,12 +18,12 @@
   "author": "Maxime LAFARIE <maxime.lafarie@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/robisim74/ngx-smart-loader.git"
+    "url": "https://github.com/biig-io/ngx-smart-loader.git"
   },
   "bugs": {
-    "url": "https://github.com/robisim74/ngx-smart-loader/issues"
+    "url": "https://github.com/biig-io/ngx-smart-loader/issues"
   },
-  "homepage": "https://github.com/robisim74/ngx-smart-loader",
+  "homepage": "https://github.com/biig-io/ngx-smart-loader",
   "keywords": [
     "ngx-smart-loader",
     "smart",
