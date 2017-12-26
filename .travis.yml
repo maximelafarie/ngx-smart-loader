@@ -11,6 +11,7 @@ node_js:
   - stable
 before_install:
   - npm i npm@^4 -g
+  - npm i codecov -g
   - npm install -g greenkeeper-lockfile@1
   - cd src/ngx-smart-loader
 install:
@@ -26,7 +27,7 @@ before_script:
 after_script:
   - greenkeeper-lockfile-upload
 after_success:
-  - ./node_modules/.bin/codecov -t CODECOV_TOKEN
+  - codecov -t $CODECOV_TOKEN
   - rm -r node_modules
   - cd ../..
   - npm run ghpages
