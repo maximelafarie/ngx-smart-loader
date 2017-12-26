@@ -16,29 +16,23 @@ export class CustomComponent implements AfterViewInit {
 
   constructor(public loader: NgxSmartLoaderService) {
 
-    this.code.one = `<ngx-smart-loader 
-  identifier="myCustomLoader" 
-  [delayIn]="2000" 
-  [delayOut]="200">
-    <div class="rubik-loader"></div>
+    this.code.one = `
+<ngx-smart-loader identifier="myCustomLoader" [delayIn]="2000" [delayOut]="200">
+  <div class="rubik-loader"></div>
 </ngx-smart-loader>`;
 
-    this.code.two = `<ngx-smart-loader 
-  identifier="myCustomLoader" 
-  [delayOut]="200">
-    <div id="jelly-loader">
-      <div id="shadow"></div>
-      <div id="box"></div>
-    </div>
-</ngx-smart-loader>
-  `;
+    this.code.two = `
+<ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+  <div id="jelly-loader">
+    <div id="shadow"></div>
+    <div id="box"></div>
+  </div>
+</ngx-smart-loader>`;
 
-    this.code.three = `<ngx-smart-loader 
-  identifier="myCustomLoader" 
-  [delayOut]="200">
-    ...
-</ngx-smart-loader>
-  `;
+    this.code.three = `
+<ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+  ...
+</ngx-smart-loader>`;
 
   }
 

@@ -16,32 +16,26 @@ export class MultiComponent {
 
   constructor(public loader: NgxSmartLoaderService) {
 
-    this.code.one = `<ngx-smart-loader 
-  identifier="myLoaderMulti" 
-  [delayIn]="2000" 
-  [delayOut]="200">
-    <div class="loader">
-      <div class="circle"></div>
-    </div>
+    this.code.one = `
+<ngx-smart-loader identifier="myLoaderMulti" [delayIn]="2000" [delayOut]="200">
+  <div class="loader">
+    <div class="circle"></div>
+  </div>
 </ngx-smart-loader>`;
 
-    this.code.two = `<ngx-smart-loader 
-  identifier="myLoaderMulti" 
-  [delayOut]="200">
-    <div class="loader">
-      <div class="circle"></div>
-    </div>
-</ngx-smart-loader>
-  `;
+    this.code.two = `
+<ngx-smart-loader identifier="myLoaderMulti" [delayOut]="200">
+  <div class="loader">
+    <div class="circle"></div>
+  </div>
+</ngx-smart-loader>`;
 
-    this.code.three = `<ngx-smart-loader 
-  identifier="myLoaderMulti" 
-  [delayOut]="200">
-    <div class="loader">
-      <div class="circle"></div>
-    </div>
-</ngx-smart-loader>
-  `;
+    this.code.three = `
+<ngx-smart-loader identifier="myLoaderMulti" [delayOut]="200">
+  <div class="loader">
+    <div class="circle"></div>
+  </div>
+</ngx-smart-loader>`;
 
 
   }
