@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, inject } from '@angular/core/testing';
 import { NgxSmartLoaderComponent, NgxSmartLoaderService } from './../../index';
 
 describe('NgxSmartLoaderComponent', () => {
@@ -68,5 +68,39 @@ describe('NgxSmartLoaderComponent', () => {
       expect(secondRef).toBeTruthy();
     });
   }));
+
+  it('should remove loader from service on destroy', inject([NgxSmartLoaderService], (service: NgxSmartLoaderService) => {
+      const fixture = TestBed.createComponent(NgxSmartLoaderComponent);
+      const app = fixture.debugElement.componentInstance;
+      app.identifier = 'myLoader';
+
+      spyOn(service, 'removeLoader');
+
+      app.ngOnDestroy();
+
+      expect(service.removeLoader).toHaveBeenCalledWith('myLoader');
+    })
+  );
+
+
+  it('should autostart loader', inject([NgxSmartLoaderService], (service: NgxSmartLoaderService) => {
+      const fixture = TestBed.createComponent(NgxSmartLoaderComponent);
+      const app = fixture.debugElement.componentInstance;
+      app.identifier = 'myLoader';
+      app.layerPosition = 1;
+      app.autostart = true;
+
+      spyOn(service, 'getLoaderStackCount').and.returnValue(2);
+      spyOn(app, 'addCustomClass');
+      spyOn(service, 'start');
+
+      app.ngOnInit();
+
+      expect(service.getLoaderStackCount).toHaveBeenCalled();
+      expect(app.addCustomClass).toHaveBeenCalledWith('my-loader');
+      expect(service.start).toHaveBeenCalledWith('myLoader');
+      expect(app.layerPosition).toEqual(3);
+    })
+  );
 
 });

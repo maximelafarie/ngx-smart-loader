@@ -25,6 +25,7 @@ export class NgxSmartLoaderComponent implements OnInit, OnDestroy {
   @Input() public force: boolean = false;
   @Input() public delayIn: number = 0;
   @Input() public delayOut: number = 0;
+  @Input() public autostart: boolean = false;
 
   @Output() public visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public onStart: EventEmitter<any> = new EventEmitter();
@@ -43,6 +44,10 @@ export class NgxSmartLoaderComponent implements OnInit, OnDestroy {
     this.layerPosition += this.ngxSmartLoaderService.getLoaderStackCount();
     this.addCustomClass(this.identifier.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
     this.ngxSmartLoaderService.addLoader({id: this.identifier, loader: this}, this.force);
+
+    if (this.autostart) {
+      this.ngxSmartLoaderService.start(this.identifier);
+    }
   }
 
   public ngOnDestroy() {
