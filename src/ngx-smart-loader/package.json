@@ -1,6 +1,6 @@
 {
   "name": "ngx-smart-loader",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Smart loader handler to manage loaders everywhere in Angular apps.",
   "main": "./bundles/ngx-smart-loader.umd.js",
   "module": "./esm5/ngx-smart-loader.js",

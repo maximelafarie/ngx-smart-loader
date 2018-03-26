@@ -77,8 +77,6 @@ The below documentation will use the following pattern:
 
 - `delayOut` (number) | `0` ― _In milliseconds. Define the time after which you want to hide your loader. The `.active` class only disappears from the loader after this time. The `.leave` class append to the loader instantly and disappears after this delay._
 
-- `autostart` (boolean) | false ― _If true, loader will start automatically when ready_
-
 ## Manipulate loaders
 First, you need to add a loader to any template at any level in your app (all examples will use the default library built-in loader).
 ```
@@ -109,8 +107,6 @@ export class HomeComponent implements AfterViewInit {
 
 }
 ```
-
-If you need to start the loader automatically, consider using the `autostart` parameter.
 
 ## Http calls
 Following the same example as above, you can use the `NgxSmartLoaderService` to start a loader. Here's a more concrete example:
@@ -190,7 +186,7 @@ export class AppComponent implements AfterViewInit {
 ## Contribute
 Firstly fork this repo, then clone it and go inside the root of the freshly forked project.
 `ng serve` to start the angular-cli demo.
-To modify the package, go into `./src/ngx-smart-loader` and do some code! 🤓
+To modify the package, go into `/src/ngx-smart-loader` and do some code! 🤓
 When you finished commit and push it to your fork repo, make a PR!
 Thank you for your support, you rock! 🤘🎸
 
