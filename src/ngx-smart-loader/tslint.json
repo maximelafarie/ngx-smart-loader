@@ -25,9 +25,7 @@
             true,
             "element",
             [
-                "ngx-smart-loader",
-                "cmp-prefix1",
-                "cmp-prefix2"
+                "ngx-smart-loader"
             ],
             "kebab-case"
         ],
