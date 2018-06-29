@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.component';
 import { LoaderInstance } from './loader-instance';
 
+interface ActionsToExecute {
+  onStart?: (id) => void;
+  onStop?: (id) => void;
+}
+
 @Injectable()
 export class NgxSmartLoaderService {
 
   private loaderStack: LoaderInstance[] = [];
   private debouncer: any;
+  private waitingActions = new Map<string, ActionsToExecute>();
 
   /**
    * Add a new loader instance. This step is essential and allows to retrieve any loader at any time.
@@ -14,7 +20,6 @@ export class NgxSmartLoaderService {
    *
    * @param loaderInstance The object that contains the given loader identifier and the loader itself.
    * @param force Optional parameter that forces the overriding of loader instance if it already exists.
-   * @returns Returns nothing special.
    */
   public addLoader(loaderInstance: LoaderInstance, force?: boolean): void {
     if (force) {
@@ -23,11 +28,11 @@ export class NgxSmartLoaderService {
       });
       if (i > -1) {
         this.loaderStack[i].loader = loaderInstance.loader;
-      } else {
-        this.loaderStack.push(loaderInstance);
+        return;
       }
-      return;
     }
+
+    this.executeWaitingAction(loaderInstance.id, 'onStart');
     this.loaderStack.push(loaderInstance);
   }
 
@@ -35,13 +40,14 @@ export class NgxSmartLoaderService {
    * Remove a loader instance from the loader stack.
    *
    * @param id The loader identifier.
-   * @returns Returns the removed loader instance.
    */
   public removeLoader(id: string): void {
     const i: number = this.loaderStack.findIndex((o: any) => {
       return o.id === id;
     });
     if (i > -1) {
+      this.executeWaitingAction(id, 'onStop');
+      this.waitingActions.delete(id);
       this.loaderStack.splice(i, 1);
     }
   }
@@ -116,11 +122,17 @@ export class NgxSmartLoaderService {
    * To retrieve several loaders with same identifiers, please call `getLoaders` method.
    *
    * @param id The loader identifier used at creation time.
+   * @return the NgxSmartLoaderComponent matching id or null if it don't exist OR not created yet
    */
-  public getLoader(id: string): NgxSmartLoaderComponent {
-    return this.loaderStack.filter((o: any) => {
-      return o.id === id;
-    })[0].loader;
+  public getLoader(id: string): NgxSmartLoaderComponent|null {
+    const loaderInstance = this.loaderStack.find((loader: any) => {
+        return loader.id === id;
+    });
+    if (!loaderInstance) {
+      return;
+    }
+
+    return loaderInstance.loader;
   }
 
   /**
@@ -129,18 +141,12 @@ export class NgxSmartLoaderService {
    * @param identifier The loader identifier.
    */
   public start(identifier: string | string[]) {
-    const me = this;
-
     if (Array.isArray(identifier)) {
       identifier.forEach((i: string) => {
-        me.loaderStack.forEach((o: LoaderInstance) => {
-          if (o.id === i) {
-            o.loader.start();
-          }
-        });
+        this.doStart(i);
       });
     } else {
-      me.getLoader(identifier).start();
+      this.doStart(identifier);
     }
   }
 
@@ -150,19 +156,12 @@ export class NgxSmartLoaderService {
    * @param identifier The loader identifier.
    */
   public stop(identifier: string | string[]) {
-    const me = this;
-
     if (Array.isArray(identifier)) {
-
       identifier.forEach((i: string) => {
-        me.loaderStack.forEach((o: LoaderInstance) => {
-          if (o.id === i) {
-            o.loader.stop();
-          }
-        });
+        this.doStop(i);
       });
     } else {
-      me.getLoader(identifier).stop();
+      this.doStop(identifier);
     }
   }
 
@@ -184,4 +183,51 @@ export class NgxSmartLoaderService {
     }
   }
 
+  /**
+   * Get the loader from the loaderStack and start it
+   * If the loader is NOT created yet, we store the start action as a promise to execute it at the loader creation
+   *
+   * @param identifier The loader identifier.
+   * */
+  private doStart(identifier): void {
+    const loader = this.getLoader(identifier);
+    // The loader is not created yet, I store the start action to execute it when the loader will be added
+    if (!loader) {
+      this.addWaitingAction(identifier, 'onStart', this.doStart);
+      return;
+    }
+
+    loader.start();
+  }
+
+  /**
+   * Get the loader from the loaderStack and stop it
+   * If the loader is NOT created yet, we store the stop action as a promise to execute it at the loader creation
+   *
+   * @param identifier The loader identifier.
+   * */
+  private doStop(identifier): void {
+    const loader = this.getLoader(identifier);
+    // The loader is not yet created, I store the stop action to execute it when the loader will be added
+    if (!loader) {
+      this.addWaitingAction(identifier, 'onStop', this.doStop);
+      return;
+    }
+
+    loader.stop();
+  }
+
+  private addWaitingAction(identifier: string, action: string, callback: (id: string) => void) {
+    const actions = this.waitingActions.get(identifier) || {};
+    actions[action] = callback.bind(this);
+    this.waitingActions.set(identifier, actions);
+  }
+
+  private executeWaitingAction(identifier: string, action: string): void {
+    const actions = this.waitingActions.get(identifier);
+    if (actions && actions.hasOwnProperty(action)) {
+      actions[action]();
+      delete actions[action];
+    }
+  }
 }

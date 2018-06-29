@@ -1,0 +1,11 @@
+<div class="top">
+  <h3>Loading ? : <strong>{{ loader.isLoading(['testLoader']) ? 'Yes!' : 'Nope.' }}</strong></h3>
+</div>
+
+<div class="container">
+  <div class="item item-white">
+    <ngx-smart-loader identifier="testLoader" [delayIn]="2000" [delayOut]="2000">
+      <div class="rubik-loader"></div>
+    </ngx-smart-loader>
+  </div>
+</div>
