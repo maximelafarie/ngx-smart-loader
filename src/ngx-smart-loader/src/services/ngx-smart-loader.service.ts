@@ -32,8 +32,8 @@ export class NgxSmartLoaderService {
       }
     }
 
-    this.executeWaitingAction(loaderInstance.id, 'onStart');
     this.loaderStack.push(loaderInstance);
+    this.executeWaitingAction(loaderInstance.id, 'onStart');
   }
 
   /**
@@ -76,13 +76,7 @@ export class NgxSmartLoaderService {
    * @returns Returns an array that contains all the opened loaders.
    */
   public getOpenedLoaders(): LoaderInstance[] {
-    const loaders: LoaderInstance[] = [];
-    this.loaderStack.forEach((o: LoaderInstance) => {
-      if (o.loader.visible) {
-        loaders.push(o);
-      }
-    });
-    return loaders;
+    return this.loaderStack.filter((loaderInstance: LoaderInstance) => loaderInstance.loader.visible );
   }
 
   /**
@@ -93,11 +87,7 @@ export class NgxSmartLoaderService {
    * @returns Returns a higher index from all the existing loader instances.
    */
   public getHigherIndex(): number {
-    const index: number[] = [];
-    const loaders: LoaderInstance[] = this.getOpenedLoaders();
-    loaders.forEach((o: LoaderInstance) => {
-      index.push(o.loader.layerPosition);
-    });
+    const index: number[] = this.getOpenedLoaders().map((o: LoaderInstance) => o.loader.layerPosition);
     return Math.max(...index) + 1;
   }
 
@@ -107,13 +97,7 @@ export class NgxSmartLoaderService {
    * @returns Returns an array that contains all the active loaders.
    */
   public getActiveLoaders(): LoaderInstance[] {
-    const loaders: LoaderInstance[] = [];
-    this.loaderStack.forEach((o: LoaderInstance) => {
-      if (o.loader.loading) {
-        loaders.push(o);
-      }
-    });
-    return loaders;
+    return this.loaderStack.filter((loaderInstance: LoaderInstance) => loaderInstance.loader.loading );
   }
 
   /**
@@ -122,12 +106,10 @@ export class NgxSmartLoaderService {
    * To retrieve several loaders with same identifiers, please call `getLoaders` method.
    *
    * @param id The loader identifier used at creation time.
-   * @return the NgxSmartLoaderComponent matching id or null if it don't exist OR not created yet
+   * @return the NgxSmartLoaderComponent matching id or null if it don't exist OR is not created yet
    */
   public getLoader(id: string): NgxSmartLoaderComponent|null {
-    const loaderInstance = this.loaderStack.find((loader: any) => {
-        return loader.id === id;
-    });
+    const loaderInstance = this.loaderStack.find((loader: any) => loader.id === id);
     if (!loaderInstance) {
       return;
     }
@@ -219,7 +201,7 @@ export class NgxSmartLoaderService {
 
   private addWaitingAction(identifier: string, action: string, callback: (id: string) => void) {
     const actions = this.waitingActions.get(identifier) || {};
-    actions[action] = callback.bind(this);
+    actions[action] = callback.bind(this, identifier);
     this.waitingActions.set(identifier, actions);
   }
 
@@ -228,6 +210,7 @@ export class NgxSmartLoaderService {
     if (actions && actions.hasOwnProperty(action)) {
       actions[action]();
       delete actions[action];
+      this.waitingActions.set(identifier, actions);
     }
   }
 }

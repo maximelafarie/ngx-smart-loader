@@ -11,7 +11,6 @@ import { HomeComponent } from './home/home.component';
 import { MultiComponent } from './multi/multi.component';
 import { CustomComponent } from './custom/custom.component';
 import { AutostartComponent } from './autostart/autostart.component';
-import {TestComponent} from "./test/test.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import {TestComponent} from "./test/test.component";
     MultiComponent,
     CustomComponent,
     AutostartComponent,
-    TestComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgxSmartLoaderService } from '../../ngx-smart-loader/src/ngx-smart-loader';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgxSmartLoaderService } from '../../ngx-smart-loader/src/ngx-smart-load
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements OnInit {
   public demoOptions = {
     actionDelay: 0,
     hideDelay: 200,
@@ -16,11 +16,12 @@ export class HomeComponent implements AfterViewInit {
   constructor(public loader: NgxSmartLoaderService) {
   }
 
-  ngAfterViewInit() {
-    // For demo auto start purposes
-    setTimeout(() => {
+  ngOnInit(): void {
       this.loader.start('myLoader');
-    }, 500);
+      setTimeout(() => {
+        console.log('HomeComponent\'s loader auto hide');
+        this.loader.stop('myLoader');
+      }, 5000);
   }
 
 }
