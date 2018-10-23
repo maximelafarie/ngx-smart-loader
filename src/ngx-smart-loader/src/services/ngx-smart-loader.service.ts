@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.component';
-import { LoaderInstance } from './loader-instance';
+import { LoaderInstance, ActionsToExecute } from './loader-instance';
 
-interface ActionsToExecute {
-  onStart?: (id) => void;
-  onStop?: (id) => void;
-}
 
 @Injectable()
 export class NgxSmartLoaderService {
@@ -108,10 +104,10 @@ export class NgxSmartLoaderService {
    * @param id The loader identifier used at creation time.
    * @return the NgxSmartLoaderComponent matching id or null if it don't exist OR is not created yet
    */
-  public getLoader(id: string): NgxSmartLoaderComponent|null {
+  public getLoader(id: string): NgxSmartLoaderComponent | null {
     const loaderInstance = this.loaderStack.find((loader: any) => loader.id === id);
     if (!loaderInstance) {
-      return;
+      return null;
     }
 
     return loaderInstance.loader;
@@ -161,17 +157,18 @@ export class NgxSmartLoaderService {
       });
       return tmp.indexOf(false) === -1;
     } else {
-      return this.getLoader(identifier).loading;
+      const loader = this.getLoader(identifier);
+      return !!loader ? loader.loading : false;
     }
   }
 
   /**
    * Get the loader from the loaderStack and start it
-   * If the loader is NOT created yet, we store the start action as a promise to execute it at the loader creation
+   * If the loader is NOT created yet, we store the start action as a callback to execute it at the loader creation
    *
    * @param identifier The loader identifier.
    * */
-  private doStart(identifier): void {
+  private doStart(identifier: string): void {
     const loader = this.getLoader(identifier);
     // The loader is not created yet, I store the start action to execute it when the loader will be added
     if (!loader) {
@@ -184,11 +181,11 @@ export class NgxSmartLoaderService {
 
   /**
    * Get the loader from the loaderStack and stop it
-   * If the loader is NOT created yet, we store the stop action as a promise to execute it at the loader creation
+   * If the loader is NOT created yet, we store the stop action as a callback to execute it at the loader creation
    *
    * @param identifier The loader identifier.
    * */
-  private doStop(identifier): void {
+  private doStop(identifier: string): void {
     const loader = this.getLoader(identifier);
     // The loader is not yet created, I store the stop action to execute it when the loader will be added
     if (!loader) {
@@ -197,18 +194,19 @@ export class NgxSmartLoaderService {
     }
 
     loader.stop();
+    this.waitingActions.delete(identifier);
   }
 
-  private addWaitingAction(identifier: string, action: string, callback: (id: string) => void) {
+  private addWaitingAction(identifier: string, action: keyof ActionsToExecute, callback: (id: string) => void) {
     const actions = this.waitingActions.get(identifier) || {};
     actions[action] = callback.bind(this, identifier);
     this.waitingActions.set(identifier, actions);
   }
 
-  private executeWaitingAction(identifier: string, action: string): void {
+  private executeWaitingAction(identifier: string, action: keyof ActionsToExecute): void {
     const actions = this.waitingActions.get(identifier);
-    if (actions && actions.hasOwnProperty(action)) {
-      actions[action]();
+    if (actions && actions.hasOwnProperty(action) && undefined !== actions[action]) {
+      actions[action]!(identifier);
       delete actions[action];
       this.waitingActions.set(identifier, actions);
     }
