@@ -117,10 +117,16 @@ export class NgxSmartLoaderService {
    *
    * @param id The loader identifier used at creation time.
    */
-  public getLoader(id: string): NgxSmartLoaderComponent {
-    return this.loaderStack.filter((o: any) => {
+  public getLoader(id: string): NgxSmartLoaderComponent | null {
+    const loader = this.loaderStack.find((o: any) => {
       return o.id === id;
-    })[0].loader;
+    });
+
+    if (loader === undefined) {
+      return null;
+    }
+
+    return loader.hasOwnProperty('loader') ? loader.loader : null;
   }
 
   /**
@@ -140,7 +146,10 @@ export class NgxSmartLoaderService {
         });
       });
     } else {
-      me.getLoader(identifier).start();
+      const loader = me.getLoader(identifier);
+      if (loader !== null) {
+        loader.start();
+      }
     }
   }
 
@@ -162,7 +171,10 @@ export class NgxSmartLoaderService {
         });
       });
     } else {
-      me.getLoader(identifier).stop();
+      const loader = me.getLoader(identifier);
+      if (loader !== null) {
+        loader.stop();
+      }
     }
   }
 
@@ -180,7 +192,11 @@ export class NgxSmartLoaderService {
       });
       return tmp.indexOf(false) === -1;
     } else {
-      return this.getLoader(identifier).loading;
+      const loader = me.getLoader(identifier);
+      if (loader !== null) {
+        return loader.loading;
+      }
+      return false;
     }
   }
 

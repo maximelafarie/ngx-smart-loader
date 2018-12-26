@@ -23,6 +23,17 @@ describe('NgxSmartLoaderService', () => {
     expect(app).toBeTruthy();
   }));
 
+  it('should return null when trying to get uncreated loader', async(() => {
+    inject([NgxSmartLoaderService],
+      (ngxSmartLoaderService: NgxSmartLoaderService) => {
+        const fixture = TestBed.createComponent(NgxSmartLoaderComponent);
+        const app = fixture.debugElement.componentInstance;
+        app.identifier = 'myLoader';
+        const myLoader = ngxSmartLoaderService.getLoader('myUnitializedLoader');
+        expect(myLoader).toEqual(null);
+      });
+  }));
+
   it('should retrieve the created loader', async(() => {
     inject([NgxSmartLoaderService],
       (ngxSmartLoaderService: NgxSmartLoaderService) => {
@@ -43,12 +54,19 @@ describe('NgxSmartLoaderService', () => {
         const compiled = fixture.debugElement.nativeElement;
 
         /* Start */
-        ngxSmartLoaderService.getLoader('myLoader').start();
+        const loader = ngxSmartLoaderService.getLoader('myLoader');
+        expect(loader).not.toEqual(null);
+
+        if (loader === null) {
+          return;
+        }
+
+        loader.start();
         expect(app.loading).toBeTruthy();
         expect(app.visible).toBeTruthy();
 
         /* Stop */
-        ngxSmartLoaderService.getLoader('myLoader').stop();
+        loader.stop();
         expect(app.loading).toBeFalsy();
         expect(app.visible).toBeFalsy();
       });
