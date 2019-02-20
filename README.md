@@ -1,5 +1,6 @@
 ![ngx-smart-loader](https://user-images.githubusercontent.com/5319267/34251919-f4a51274-e641-11e7-8c5d-f2dddfc742ac.png)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f3abf5c9ce28442b8bef806a98af2f49)](https://app.codacy.com/app/maximelafarie/ngx-smart-loader?utm_source=github.com&utm_medium=referral&utm_content=biig-io/ngx-smart-loader&utm_campaign=Badge_Grade_Settings)
 [![Greenkeeper badge](https://badges.greenkeeper.io/biig-io/ngx-smart-loader.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/biig-io/ngx-smart-loader.svg?branch=master)](https://travis-ci.org/biig-io/ngx-smart-loader) [![npm version](https://badge.fury.io/js/ngx-smart-loader.svg)](https://badge.fury.io/js/ngx-smart-loader) [![npm downloads](https://img.shields.io/npm/dm/ngx-smart-loader.svg)](https://npmjs.org/ngx-smart-loader) [![codecov](https://codecov.io/gh/biig-io/ngx-smart-loader/branch/master/graph/badge.svg)](https://codecov.io/gh/biig-io/ngx-smart-loader)
 
