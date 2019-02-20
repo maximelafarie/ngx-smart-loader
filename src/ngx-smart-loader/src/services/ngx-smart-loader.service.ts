@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.component';
+
 import { LoaderInstance } from './loader-instance';
 
 @Injectable()
 export class NgxSmartLoaderService {
-
-  private loaderStack: LoaderInstance[] = [];
-  private debouncer: any;
+  private _loaderStack: LoaderInstance[] = [];
+  private _actions: Array<{ identifier: string, action: string }> = [];
 
   /**
    * Add a new loader instance. This step is essential and allows to retrieve any loader at any time.
@@ -18,32 +17,33 @@ export class NgxSmartLoaderService {
    */
   public addLoader(loaderInstance: LoaderInstance, force?: boolean): void {
     if (force) {
-      const i: number = this.loaderStack.findIndex((o: LoaderInstance) => {
+      const i: number = this._loaderStack.findIndex((o: LoaderInstance) => {
         return o.id === loaderInstance.id;
       });
       if (i > -1) {
-        this.loaderStack[i].loader = loaderInstance.loader;
+        this._loaderStack[i].component = loaderInstance.component;
       } else {
-        this.loaderStack.push(loaderInstance);
+        this._loaderStack.push(loaderInstance);
       }
       return;
     }
-    this.loaderStack.push(loaderInstance);
+    let loader;
+    if (loader = this._getLoader(loaderInstance.id)) {
+      throw (new Error('Loader with ' + loaderInstance.id + ' identifier already exist'));
+    } else {
+      this._loaderStack.push(loaderInstance);
+    }
   }
 
   /**
    * Remove a loader instance from the loader stack.
    *
    * @param id The loader identifier.
-   * @returns Returns the removed loader instance.
    */
   public removeLoader(id: string): void {
-    const i: number = this.loaderStack.findIndex((o: any) => {
-      return o.id === id;
-    });
-    if (i > -1) {
-      this.loaderStack.splice(i, 1);
-    }
+    this._loaderStack = this._loaderStack.filter((loader) => loader.id !== id);
+
+    this._removeAction(id, '*');
   }
 
   /**
@@ -52,7 +52,7 @@ export class NgxSmartLoaderService {
    * @returns Returns an array that contains all loader instances.
    */
   public getLoaderStack(): LoaderInstance[] {
-    return this.loaderStack;
+    return this._loaderStack;
   }
 
   /**
@@ -61,7 +61,7 @@ export class NgxSmartLoaderService {
    * @returns Returns the number of loader instances.
    */
   public getLoaderStackCount(): number {
-    return this.loaderStack.length;
+    return this._loaderStack.length;
   }
 
   /**
@@ -70,13 +70,16 @@ export class NgxSmartLoaderService {
    * @returns Returns an array that contains all the opened loaders.
    */
   public getOpenedLoaders(): LoaderInstance[] {
-    const loaders: LoaderInstance[] = [];
-    this.loaderStack.forEach((o: LoaderInstance) => {
-      if (o.loader.visible) {
-        loaders.push(o);
-      }
-    });
-    return loaders;
+    return this._loaderStack.filter((loader) => loader.component.visible);
+  }
+
+  /**
+   * Retrieve all the active loaders. It looks for all loader instances with their `loading` property set to `true`.
+   *
+   * @returns Returns an array that contains all the active loaders.
+   */
+  public getActiveLoaders(): LoaderInstance[] {
+    return this._loaderStack.filter((loader) => loader.component.loading);
   }
 
   /**
@@ -87,101 +90,143 @@ export class NgxSmartLoaderService {
    * @returns Returns a higher index from all the existing loader instances.
    */
   public getHigherIndex(): number {
-    const index: number[] = [];
-    const loaders: LoaderInstance[] = this.getOpenedLoaders();
-    loaders.forEach((o: LoaderInstance) => {
-      index.push(o.loader.layerPosition);
-    });
+    const index: number[] = this.getOpenedLoaders().map((loader) => loader.component.layerPosition);
+
     return Math.max(...index) + 1;
-  }
-
-  /**
-   * Retrieve all the active loaders. It looks for all loader instances with their `loading` property set to `true`.
-   *
-   * @returns Returns an array that contains all the active loaders.
-   */
-  public getActiveLoaders(): LoaderInstance[] {
-    const loaders: LoaderInstance[] = [];
-    this.loaderStack.forEach((o: LoaderInstance) => {
-      if (o.loader.loading) {
-        loaders.push(o);
-      }
-    });
-    return loaders;
-  }
-
-  /**
-   * Retrieve a loader instance by its identifier.
-   * If there's several loaders with same identifier, the first is returned.
-   * To retrieve several loaders with same identifiers, please call `getLoaders` method.
-   *
-   * @param id The loader identifier used at creation time.
-   */
-  public getLoader(id: string): NgxSmartLoaderComponent {
-    return this.loaderStack.filter((o: any) => {
-      return o.id === id;
-    })[0].loader;
   }
 
   /**
    * Enable loading state to one or several loaders.
    *
-   * @param identifier The loader identifier.
+   * @param id The loader identifier.
    */
-  public start(identifier: string | string[]) {
-    const me = this;
+  public start(id: string | string[]): void {
+    let loader;
 
-    if (Array.isArray(identifier)) {
-      identifier.forEach((i: string) => {
-        me.loaderStack.forEach((o: LoaderInstance) => {
-          if (o.id === i) {
-            o.loader.start();
-          }
-        });
+    if (Array.isArray(id)) {
+      id.forEach((i: string) => {
+        this.start(i);
       });
+    } else if (loader = this._getLoader(id)) {
+      loader.component.start();
+      this._removeAction(id, 'start');
     } else {
-      me.getLoader(identifier).start();
+      this._addAction(id, 'start');
     }
+  }
+
+  /**
+   * Enable loading state to all loaders.
+   */
+  public startAll(): void {
+    this._loaderStack.forEach((loader) => this.start(loader.id));
   }
 
   /**
    * Disable loading state to one or several loaders.
    *
-   * @param identifier The loader identifier.
+   * @param id The loader identifier.
    */
-  public stop(identifier: string | string[]) {
-    const me = this;
+  public stop(id: string | string[]): void {
+    let loader;
 
-    if (Array.isArray(identifier)) {
-
-      identifier.forEach((i: string) => {
-        me.loaderStack.forEach((o: LoaderInstance) => {
-          if (o.id === i) {
-            o.loader.stop();
-          }
-        });
+    if (Array.isArray(id)) {
+      id.forEach((i: string) => {
+        this.stop(i);
       });
+    } else if (loader = this._getLoader(id)) {
+      loader.component.stop();
+      this._removeAction(id, 'stop');
     } else {
-      me.getLoader(identifier).stop();
+      this._addAction(id, 'stop');
     }
   }
 
-  public isLoading(identifier: string | string[]): boolean {
-    const me = this;
+  /**
+   * Disable loading state to all loaders.
+   */
+  public stopAll(): void {
+    this._loaderStack.forEach((loader) => this.stop(loader.id));
+  }
 
-    if (Array.isArray(identifier)) {
+  public isLoading(id: string | string[]): boolean {
+    let loader;
+    if (Array.isArray(id)) {
       const tmp: any = [];
-      identifier.forEach((i: string) => {
-        me.loaderStack.forEach((o: LoaderInstance) => {
-          if (o.id === i) {
-            tmp.push(o.loader.loading);
+
+      id.forEach((i: string) => {
+        this._loaderStack.forEach((load) => {
+          if (load.id === i) {
+            tmp.push(load.component.loading);
           }
         });
       });
       return tmp.indexOf(false) === -1;
+    } else if (loader = this._getLoader(id)) {
+      return loader.component.loading;
     } else {
-      return this.getLoader(identifier).loading;
+      return false;
     }
   }
 
+  /**
+   * Execute an action on loaders
+   *
+   * @param id The loader identifier.
+   * @param action Name of the action.
+   */
+  public executeAction(id: string, action: string): void {
+    if (this._actions.find((act) => act.identifier === id && act.action === action)) {
+      switch (action) {
+        case 'start':
+          this.start(id);
+          break;
+        case 'stop':
+          this.stop(id);
+          break;
+      }
+    }
+  }
+
+  /**
+   * Retrieve a loader instance by its identifier.
+   * If there's several loaders with same identifier, the first is returned.
+   *
+   * @param id The loader identifier used at creation time.
+   */
+  private _getLoader(id: string): LoaderInstance | null {
+    return this._loaderStack.find((load) => load.id === id) || null;
+  }
+
+  /**
+   * Adds an action on one or more loaders
+   *
+   * @param id The loader identifier.
+   * @param action Name of the action.
+   */
+  private _addAction(id: string | string[], action: string): void {
+    if (Array.isArray(id)) {
+      id.forEach((i: string) => {
+        this._addAction(i, action);
+      });
+    } else {
+      this._actions.push({ identifier: id, action: action });
+    }
+  }
+
+  /**
+   * Remove an action on one or more loaders
+   *
+   * @param id The loader identifier.
+   * @param action Name of the action.
+   */
+  private _removeAction(id: string | string[], action: string): void {
+    if (Array.isArray(id)) {
+      id.forEach((i: string) => {
+        this._removeAction(i, action);
+      });
+    } else {
+      this._actions = this._actions.filter((act) => act.identifier !== id || (act.action !== action && action !== '*'));
+    }
+  }
 }

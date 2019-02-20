@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxSmartLoaderService } from '../../ngx-smart-loader/src/ngx-smart-loader';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgxSmartLoaderService } from '../../ngx-smart-loader/src/ngx-smart-load
   templateUrl: './custom.component.html',
   styleUrls: ['./custom.component.scss']
 })
-export class CustomComponent implements AfterViewInit {
+export class CustomComponent implements OnInit {
 
   public code = {
     one: null,
@@ -17,12 +17,12 @@ export class CustomComponent implements AfterViewInit {
   constructor(public loader: NgxSmartLoaderService) {
 
     this.code.one = `
-<ngx-smart-loader identifier="myCustomLoader" [delayIn]="2000" [delayOut]="200">
+<ngx-smart-loader identifier="myCustomLoader1" [delayIn]="2000" [delayOut]="2000">
   <div class="rubik-loader"></div>
 </ngx-smart-loader>`;
 
     this.code.two = `
-<ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+<ngx-smart-loader identifier="myCustomLoader2" [delayOut]="200">
   <div id="jelly-loader">
     <div id="shadow"></div>
     <div id="box"></div>
@@ -30,20 +30,20 @@ export class CustomComponent implements AfterViewInit {
 </ngx-smart-loader>`;
 
     this.code.three = `
-<ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+<ngx-smart-loader identifier="myCustomLoader3" [delayOut]="200">
   ...
 </ngx-smart-loader>`;
 
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
+  }
 
-    this.loader.getLoader('myCustomLoader').onStart.subscribe(res => {
-      console.log('start');
-    });
+  onStart(event) {
+    console.log('loader started', event);
+  }
 
-    this.loader.getLoader('myCustomLoader').onStop.subscribe(res => {
-      console.log('stop');
-    });
+  onStop(event) {
+    console.log('loader stopped', event);
   }
 }

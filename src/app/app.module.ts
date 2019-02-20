@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { MultiComponent } from './multi/multi.component';
 import { CustomComponent } from './custom/custom.component';
 import { AutostartComponent } from './autostart/autostart.component';
+import { ForkMeComponent } from './fork-me/fork-me.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AutostartComponent } from './autostart/autostart.component';
     HomeComponent,
     MultiComponent,
     CustomComponent,
-    AutostartComponent
+    AutostartComponent,
+    ForkMeComponent
   ],
   imports: [
     BrowserModule,

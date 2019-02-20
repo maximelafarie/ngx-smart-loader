@@ -1,16 +1,17 @@
 <div class="top">
-  <h3>Loading ? : <strong>{{ loader.isLoading(['myCustomLoader']) ? 'Yes!' : 'Nope.' }}</strong></h3>
+  <h3>Loading ? :
+    <strong>{{ loader.isLoading(['myCustomLoader1', 'myCustomLoader2', 'myCustomLoader3']) ? 'Yes!' : 'Nope.' }}</strong>
+  </h3>
 </div>
-
 <div class="container">
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader" [delayIn]="2000" [delayOut]="2000">
+    <ngx-smart-loader identifier="myCustomLoader1" [delayIn]="2000" [delayOut]="2000" (onStart)="onStart($event)" (onStop)="onStop($event)">
       <div class="rubik-loader"></div>
     </ngx-smart-loader>
   </div>
 
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+    <ngx-smart-loader identifier="myCustomLoader2" [delayOut]="200">
       <div id="jelly-loader">
         <div id="shadow"></div>
         <div id="box"></div>
@@ -19,7 +20,7 @@
   </div>
 
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader" [delayOut]="200">
+    <ngx-smart-loader identifier="myCustomLoader3" [delayOut]="200">
       <div class="body">
         <span>
           <span></span>
@@ -71,6 +72,10 @@
 </div>
 
 <div class="btn-container">
-  <button (click)="loader.start(['myCustomLoader'])">Loading start (actionDelay: 0ms)</button>
-  <button (click)="loader.stop(['myCustomLoader'])">Loading stop (actionDelay: 0ms, hideDelay: 200ms)</button>
+  <button (click)="loader.startAll()">
+    Loading start (actionDelay: 0ms)
+  </button>
+  <button (click)="loader.stopAll()">
+    Loading stop (actionDelay: 0ms, hideDelay: 200ms)
+  </button>
 </div>
