@@ -1,7 +1,8 @@
-import {CommonModule} from '@angular/common';
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {NgxSmartLoaderService} from '../services/ngx-smart-loader.service';
-import {NgxSmartLoaderComponent} from '../components/ngx-smart-loader.component';
+import { CommonModule } from '@angular/common';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+
+import { NgxSmartLoaderService } from '../services/ngx-smart-loader.service';
+import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.component';
 
 @NgModule({
   declarations: [NgxSmartLoaderComponent],

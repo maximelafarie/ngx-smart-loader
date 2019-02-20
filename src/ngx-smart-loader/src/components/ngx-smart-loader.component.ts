@@ -2,11 +2,13 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
+
+import { LoaderInstance } from './../services/loader-instance';
 import { NgxSmartLoaderService } from "../services/ngx-smart-loader.service";
 
 @Component({
@@ -20,91 +22,109 @@ import { NgxSmartLoaderService } from "../services/ngx-smart-loader.service";
 })
 export class NgxSmartLoaderComponent implements OnInit, OnDestroy {
 
-  @Input() public identifier: string;
+  @Input() public identifier: string = '';
   @Input() public customClass: string = '';
   @Input() public force: boolean = false;
   @Input() public delayIn: number = 0;
   @Input() public delayOut: number = 0;
   @Input() public autostart: boolean = false;
 
-  @Output() public visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() public onStart: EventEmitter<any> = new EventEmitter();
-  @Output() public onStop: EventEmitter<any> = new EventEmitter();
+  @Output() public onStart = new EventEmitter<NgxSmartLoaderComponent>();
+  @Output() public onStop = new EventEmitter<NgxSmartLoaderComponent>();
+  @Output() public onVisibleChange = new EventEmitter<NgxSmartLoaderComponent>();
 
   public loading: boolean = false;
   public visible: boolean = false;
   public layerPosition: number = 999;
-  private debouncer: any;
-  private isProcessing: boolean = false;
+
+  private _debouncer: any;
+  private _isProcessing: boolean = false;
+
+  private _loaderBodyClass = 'loader-open';
+  private _enterClass = 'enter';
+  private _leaveClass = 'leave';
 
   constructor(public ngxSmartLoaderService: NgxSmartLoaderService, private changeDetectorRef: ChangeDetectorRef) {
   }
 
-  public ngOnInit() {
-    this.layerPosition += this.ngxSmartLoaderService.getLoaderStackCount();
-    this.addCustomClass(this.identifier.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
-    this.ngxSmartLoaderService.addLoader({id: this.identifier, loader: this}, this.force);
+  public ngOnInit(): void {
+    try {
+      const loader = new LoaderInstance(this);
 
-    if (this.autostart) {
-      this.ngxSmartLoaderService.start(this.identifier);
+      this.ngxSmartLoaderService.addLoader(loader, this.force);
+
+      this.layerPosition += this.ngxSmartLoaderService.getLoaderStackCount();
+      this.addCustomClass(this.identifier.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
+
+      if (this.autostart) {
+        this.ngxSmartLoaderService.start(this.identifier);
+      } else {
+        this.ngxSmartLoaderService.executeAction(this.identifier, 'start');
+      }
+    } catch (error) {
+      throw (error);
     }
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.ngxSmartLoaderService.removeLoader(this.identifier);
   }
 
   public start(top?: boolean): void {
-    const me = this;
+    this._isProcessing = true;
 
-    me.isProcessing = true;
+    clearInterval(this._debouncer);
 
-    clearInterval(me.debouncer);
+    this.visible = true;
 
-    me.visible = true;
-    me.addCustomClass('enter');
-    me.debouncer = setTimeout(() => {
+    setTimeout(() => {
+      this.addCustomClass(this._enterClass);
+    });
+
+    this._debouncer = setTimeout(() => {
       if (top) {
-        me.layerPosition = me.ngxSmartLoaderService.getHigherIndex();
+        this.layerPosition = this.ngxSmartLoaderService.getHigherIndex();
       }
 
-      if (!document.body.classList.contains('loader-open')) {
-        document.body.classList.add('loader-open');
+      if (!document.body.classList.contains(this._loaderBodyClass)) {
+        document.body.classList.add(this._loaderBodyClass);
       }
 
-      me.loading = true;
-      me.visibleChange.emit(me.visible);
-      me.onStart.emit(me);
-      me.removeCustomClass('enter');
-      me.isProcessing = false;
-    }, me.delayIn);
+      this.loading = true;
+
+      this.onStart.emit(this);
+      this.onVisibleChange.emit(this);
+
+      this.removeCustomClass(this._enterClass);
+      this._isProcessing = false;
+    }, this.delayIn);
   }
 
   public stop(): void {
-    const me = this;
-
-    if (me.isProcessing) {
-      me.visible = false;
-      me.loading = false;
+    if (this._isProcessing) {
+      this.visible = false;
+      this.loading = false;
     }
 
-    clearInterval(me.debouncer);
+    clearInterval(this._debouncer);
 
-    me.addCustomClass('leave');
-    me.loading = false;
-    me.debouncer = setTimeout(() => {
-      if (document.body.classList.contains('loader-open')) {
-        document.body.classList.remove('loader-open');
+    this.addCustomClass(this._leaveClass);
+    this.loading = false;
+    this._debouncer = setTimeout(() => {
+      if (document.body.classList.contains(this._loaderBodyClass)) {
+        document.body.classList.remove(this._loaderBodyClass);
       }
 
-      me.visible = false;
-      me.visibleChange.emit(me.visible);
-      me.onStop.emit(me);
-      me.removeCustomClass('leave');
+      this.visible = false;
+
+      this.onStop.emit(this);
+      this.onVisibleChange.emit(this);
+
+      this.removeCustomClass(this._leaveClass);
       setTimeout(() => {
-        me.changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();
       });
-    }, me.delayOut);
+    }, this.delayOut);
   }
 
   public addCustomClass(className: string): void {
@@ -124,5 +144,4 @@ export class NgxSmartLoaderComponent implements OnInit, OnDestroy {
       this.customClass = '';
     }
   }
-
 }

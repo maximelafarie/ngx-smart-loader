@@ -2,5 +2,10 @@ import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.componen
 
 export class LoaderInstance {
   public id: string;
-  public loader: NgxSmartLoaderComponent;
+  public component: NgxSmartLoaderComponent;
+
+  constructor(component: NgxSmartLoaderComponent) {
+    this.id = component.identifier;
+    this.component = component;
+  }
 }
