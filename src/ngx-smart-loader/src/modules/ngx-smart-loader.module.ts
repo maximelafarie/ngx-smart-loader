@@ -12,7 +12,7 @@ import { NgxSmartLoaderComponent } from '../components/ngx-smart-loader.componen
 export class NgxSmartLoaderModule {
 
   /**
-   * Use in AppModule: new instance of NgxSmartModal.
+   * Use in AppModule: new instance of NgxSmartLoader.
    */
   public static forRoot(): ModuleWithProviders {
     return {
@@ -22,7 +22,7 @@ export class NgxSmartLoaderModule {
   }
 
   /**
-   * Use in features modules with lazy loading: new instance of NgxSmartModal.
+   * Use in features modules with lazy loading: new instance of NgxSmartLoader.
    */
   public static forChild(): ModuleWithProviders {
     return {
