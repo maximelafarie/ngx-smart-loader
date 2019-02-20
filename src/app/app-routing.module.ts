@@ -7,16 +7,16 @@ import { CustomComponent } from './custom/custom.component';
 import { AutostartComponent } from './autostart/autostart.component';
 
 const routes: Routes = [
-  {pathMatch: 'full', path: '', redirectTo: 'default'},
-  {path: 'default', component: HomeComponent},
-  {path: 'multi', component: MultiComponent},
-  {path: 'custom', component: CustomComponent},
-  {path: 'autostart', component: AutostartComponent},
-  {pathMatch: 'full', path: '**', redirectTo: 'default'},
+  { pathMatch: 'full', path: '', redirectTo: 'default' },
+  { path: 'default', component: HomeComponent },
+  { path: 'multi', component: MultiComponent },
+  { path: 'custom', component: CustomComponent },
+  { path: 'autostart', component: AutostartComponent },
+  { pathMatch: 'full', path: '**', redirectTo: 'default' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

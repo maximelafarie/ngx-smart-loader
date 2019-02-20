@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { NgxSmartLoaderModule } from '../ngx-smart-loader';
