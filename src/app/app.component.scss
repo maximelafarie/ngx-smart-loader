@@ -1,0 +1,17 @@
+.biig-watermark {
+  position: absolute;
+  right: 6px;
+  bottom: 0;
+  z-index: 3;
+
+  #biig-link {
+    display: block;
+    opacity: .5;
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1;
+    }
+  }
+}

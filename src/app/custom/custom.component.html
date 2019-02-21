@@ -5,13 +5,18 @@
 </div>
 <div class="container">
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader1" [delayIn]="2000" [delayOut]="2000" (onStart)="onStart($event)" (onStop)="onStop($event)">
+    <ngx-smart-loader identifier="myCustomLoader1"
+                      [delayIn]="2000"
+                      [delayOut]="2000"
+                      (onStart)="onStart($event)"
+                      (onStop)="onStop($event)">
       <div class="rubik-loader"></div>
     </ngx-smart-loader>
   </div>
 
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader2" [delayOut]="200">
+    <ngx-smart-loader identifier="myCustomLoader2"
+                      [delayOut]="200">
       <div id="jelly-loader">
         <div id="shadow"></div>
         <div id="box"></div>
@@ -20,7 +25,8 @@
   </div>
 
   <div class="item item-white">
-    <ngx-smart-loader identifier="myCustomLoader3" [delayOut]="200">
+    <ngx-smart-loader identifier="myCustomLoader3"
+                      [delayOut]="200">
       <div class="body">
         <span>
           <span></span>
