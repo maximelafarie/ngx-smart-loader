@@ -16,9 +16,7 @@ node_js:
 before_install:
   - npm i -g npm
   - npm i -g codecov
-  - npm i -g codeclimate-test-reporter
   - npm i -g codacy-coverage
-  - npm i -g greenkeeper-lockfile@1
   - npm i -g live-server@1
   - npm i -g node-gyp@3
   - cd src/ngx-smart-loader
@@ -31,9 +29,6 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3
-  - greenkeeper-lockfile-update
-after_script:
-  - greenkeeper-lockfile-upload
 after_success:
   - codecov -t $CODECOV_TOKEN
   - cat coverage/lcov.info | codacy-coverage
