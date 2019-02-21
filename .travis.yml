@@ -1,7 +1,11 @@
 sudo: required
 dist: trusty
+env:
+  global:
+    - CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
 addons:
   apt:
+    update: true
     sources:
       - google-chrome
     packages:
@@ -10,9 +14,11 @@ language: node_js
 node_js:
   - stable
 before_install:
-  - npm i npm@^4 -g
-  - npm i codecov -g
-  - npm install -g greenkeeper-lockfile@1
+  - npm i -g npm
+  - npm i -g codecov
+  - npm i -g codacy-coverage
+  - npm i -g live-server@1
+  - npm i -g node-gyp@3
   - cd src/ngx-smart-loader
 install:
   - npm install
@@ -23,11 +29,9 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3
-  - greenkeeper-lockfile-update
-after_script:
-  - greenkeeper-lockfile-upload
 after_success:
   - codecov -t $CODECOV_TOKEN
+  - cat coverage/lcov.info | codacy-coverage
   - rm -r node_modules
   - cd ../..
   - npm run ghpages
