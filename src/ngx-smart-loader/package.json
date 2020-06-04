@@ -19,12 +19,12 @@
   "author": "Maxime LAFARIE <maxime.lafarie@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/biig-io/ngx-smart-loader.git"
+    "url": "https://maximelafarie.com/ngx-smart-loader.git"
   },
   "bugs": {
-    "url": "https://github.com/biig-io/ngx-smart-loader/issues"
+    "url": "https://maximelafarie.com/ngx-smart-loader/issues"
   },
-  "homepage": "https://github.com/biig-io/ngx-smart-loader",
+  "homepage": "https://maximelafarie.com/ngx-smart-loader",
   "keywords": [
     "ngx-smart-loader",
     "smart",

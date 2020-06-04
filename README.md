@@ -1,14 +1,14 @@
 ![ngx-smart-loader](src/assets/banner.jpg)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/biig-io/ngx-smart-loader.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/biig-io/ngx-smart-loader.svg?branch=master)](https://travis-ci.org/biig-io/ngx-smart-loader) [![npm version](https://badge.fury.io/js/ngx-smart-loader.svg)](https://badge.fury.io/js/ngx-smart-loader) [![npm downloads](https://img.shields.io/npm/dm/ngx-smart-loader.svg)](https://npmjs.org/ngx-smart-loader) 
-[![codecov](https://codecov.io/gh/biig-io/ngx-smart-loader/branch/master/graph/badge.svg)](https://codecov.io/gh/biig-io/ngx-smart-loader) 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4106ddd7050148ad98c0843c9c6800f0)](https://www.codacy.com/app/maximelafarie/ngx-smart-loader?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=biig-io/ngx-smart-loader&amp;utm_campaign=Badge_Grade)
+[![Greenkeeper badge](https://badges.greenkeeper.io/maximelafarie/ngx-smart-loader.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/maximelafarie/ngx-smart-loader.svg?branch=master)](https://travis-ci.org/maximelafarie/ngx-smart-loader) [![npm version](https://badge.fury.io/js/ngx-smart-loader.svg)](https://badge.fury.io/js/ngx-smart-loader) [![npm downloads](https://img.shields.io/npm/dm/ngx-smart-loader.svg)](https://npmjs.org/ngx-smart-loader) 
+[![codecov](https://codecov.io/gh/maximelafarie/ngx-smart-loader/branch/master/graph/badge.svg)](https://codecov.io/gh/maximelafarie/ngx-smart-loader) 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4106ddd7050148ad98c0843c9c6800f0)](https://www.codacy.com/app/maximelafarie/ngx-smart-loader?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=maximelafarie/ngx-smart-loader&amp;utm_campaign=Badge_Grade)
 
 `ngx-smart-loader` is a lightweight and very complete Angular component for managing loaders inside any Angular project. It was built for modern browsers using TypeScript, HTML5 and Angular >=2.0.0.
 
 ## Demo
-http://biig-io.github.io/ngx-smart-loader/
+https://maximelafarie/ngx-smart-loader/
 
 
 ## Powerful and so easy to use! 🤙
@@ -16,9 +16,9 @@ Managing loaders has always been a big deal, mostly if you want to manage severa
 
 `ngx-smart-loader` also comes with a fancy default loader (demo default page's loader) in case you don't want to add your own.
 
-Check out the [documentation](https://github.com/biig-io/ngx-smart-loader) & [demos](http://biig-io.github.io/ngx-smart-loader/) for more information and tutorials!
+Check out the [documentation](https://maximelafarie.com/ngx-smart-loader) & [demos](https://maximelafarie/ngx-smart-loader/) for more information and tutorials!
 
-See the [changelog](https://github.com/biig-io/ngx-smart-loader/blob/master/src/ngx-smart-loader/CHANGELOG.md) for recent changes.
+See the [changelog](https://maximelafarie.com/ngx-smart-loader/blob/master/src/ngx-smart-loader/CHANGELOG.md) for recent changes.
 
 ## Features
  - Handle large quantity of loaders anywhere in your app
