@@ -4,16 +4,13 @@ env:
   global:
     - CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
 addons:
-  apt:
-    update: true
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
 language: node_js
 node_js:
   - stable
 before_install:
+  - echo "$TRAVIS_BRANCH"
+  - echo "$TRAVIS_PULL_REQUEST"
   - npm i -g npm
   - npm i -g codecov
   - npm i -g codacy-coverage
@@ -34,7 +31,7 @@ after_success:
   - cat coverage/lcov.info | codacy-coverage
   - rm -r node_modules
   - cd ../..
-  - npm run ghpages
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == false ]; then npm run ghpages; fi
 notifications:
   email: false
 deploy:
