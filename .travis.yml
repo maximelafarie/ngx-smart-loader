@@ -7,7 +7,7 @@ addons:
   chrome: stable
 language: node_js
 node_js:
-  - stable
+  - 11.10.0
 before_install:
   - echo "$TRAVIS_BRANCH"
   - echo "$TRAVIS_PULL_REQUEST"

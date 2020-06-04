@@ -8,7 +8,7 @@
 `ngx-smart-loader` is a lightweight and very complete Angular component for managing loaders inside any Angular project. It was built for modern browsers using TypeScript, HTML5 and Angular >=2.0.0.
 
 ## Demo
-https://maximelafarie/ngx-smart-loader/
+https://maximelafarie.com/ngx-smart-loader/
 
 
 ## Powerful and so easy to use! 🤙
@@ -16,7 +16,7 @@ Managing loaders has always been a big deal, mostly if you want to manage severa
 
 `ngx-smart-loader` also comes with a fancy default loader (demo default page's loader) in case you don't want to add your own.
 
-Check out the [documentation](https://maximelafarie.com/ngx-smart-loader) & [demos](https://maximelafarie/ngx-smart-loader/) for more information and tutorials!
+Check out the [documentation](https://maximelafarie.com/ngx-smart-loader) & [demos](https://maximelafarie.com/ngx-smart-loader/) for more information and tutorials!
 
 See the [changelog](https://maximelafarie.com/ngx-smart-loader/blob/master/src/ngx-smart-loader/CHANGELOG.md) for recent changes.
 
